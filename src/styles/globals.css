@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #134e4a white;
+  overflow-x: hidden;
+}
+
+body {
+  user-select: none;
+  font-family: "IBM Plex Sans Arabic", sans-serif;
+}
+
+.responsive-grid {
+  @apply grid grid-cols-[repeat(auto-fit,minmax(200px,300px))] gap-10 ;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
