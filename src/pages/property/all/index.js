@@ -15,6 +15,7 @@ const index = () => {
                 .then((data) => data.data.data)
                 .catch((err) => console.log(err));
             setProperties(response);
+            console.log(response);
         };
         getProperties();
     }, []);
@@ -40,6 +41,7 @@ const index = () => {
                     return (
                         <PropertyCard
                             key={property._id}
+                            id={property._id}
                             propName={property.propertyName}
                             propImage={property.image}
                             propLocation={property.location}
