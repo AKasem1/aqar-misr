@@ -8,6 +8,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
+        <link rel='icon' href='/aqar_logo.png' />
       </Head>
       <body className="antialiased">
         <Main />

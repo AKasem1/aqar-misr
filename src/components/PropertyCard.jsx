@@ -8,18 +8,18 @@ const PropertyCard = (props) => {
   return (
     <div
       className="border-2 border-gray-200 rounded-lg flex flex-col"
-      style={{ height: "400px" }} // Fixed height for all cards
+      style={{ height: "400px" }} 
     >
       <Link href={"/property/" + props.id} className="h-full flex flex-col">
         {/* Property Image */}
         <div
           className="rounded-t-lg overflow-hidden"
-          style={{ height: "200px", width: "100%" }} // Fixed image area
+          style={{ height: "200px", width: "300px" }}
         >
           <Image
             width={200}
             height={200}
-            src={props.propImage || "/property_1_image.png"}
+            src={props.propImage}
             alt="Property Image"
             className="w-full h-full object-cover"
           />

@@ -11,7 +11,7 @@ const index = () => {
     useEffect(() => {
         const getProperties = async () => {
             const response = await axios
-                .get("/api/property/getRequests/")
+                .get("/api/property/getProperties/")
                 .then((data) => data.data.data)
                 .catch((err) => console.log(err));
             setProperties(response);
@@ -41,7 +41,7 @@ const index = () => {
                         <PropertyCard
                             key={property._id}
                             propName={property.propertyName}
-                            propImage={property.propertyImage}
+                            propImage={property.image}
                             propLocation={property.location}
                             propAttributes={property.attributes}
                             propOwnerPhone={property.addedBy.phone}

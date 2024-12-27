@@ -16,7 +16,7 @@ const PropertyListView = () => {
   useEffect(() => {
     const getProperties = async () => {
       const response = await axios
-        .get("/api/property/getRequests")
+        .get("/api/property/getProperties")
         .then((data) => data.data.data)
         .catch((err) => console.log(err));
       setProperties(response);
