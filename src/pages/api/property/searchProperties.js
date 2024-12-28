@@ -2,6 +2,7 @@ import Property from "@/pages/models/Property";
 import mongoose from "mongoose";
 
 const handler = async (req, res) => {
+  
   try {
     if (req.method === "GET") {
       await mongoose.connect(process.env.MONGO_URL);
