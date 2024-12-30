@@ -30,10 +30,7 @@ const PropertyCard = (props) => {
         </div>
 
         {/* Content Section */}
-        <div
-          className="px-4 py-2 flex flex-col gap-2 flex-grow overflow-hidden"
-          style={{ flexGrow: 1 }} // Ensure content takes up remaining space
-        >
+        <div className="px-4 py-2 flex flex-col gap-2 flex-grow overflow-hidden">
           <h1 className="text-lg font-semibold">{props.propName}</h1>
 
           {/* Property Location */}

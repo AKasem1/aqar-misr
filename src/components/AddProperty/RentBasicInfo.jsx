@@ -31,6 +31,7 @@ import ExpandingTextarea from '@/components/form/ExpandingTextarea';
 const RentBasicInfo = (type) => {
   const router = useRouter();
   let contractType = type.type;
+  const [uploadStatus, setUploadStatus] = useState('idle')
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
 
@@ -102,8 +103,15 @@ const RentBasicInfo = (type) => {
   const handleImageUpload = async (e) => {
     const image = e.target.files[0];
     if (image) {
-      const imageUrl = await imgUpload(image);
-      setFormState({ ...formState, image: imageUrl });
+      setUploadStatus('uploading');
+      try {
+        const imageUrl = await imgUpload(image);
+        setFormState({ ...formState, image: imageUrl });
+        setUploadStatus('uploaded');
+      } catch (error) {
+        console.error('Image upload failed:', error);
+        setUploadStatus('حدث خطأ أثناء رفع الصورة');
+      }
     }
   };
 
@@ -195,17 +203,46 @@ const RentBasicInfo = (type) => {
         />
       </div>
       <div className="space-y-2 w-full md:w-2/4">
-        <label htmlFor="file_input" className="block mb-2 text-md font-semibold text-gray-900 dark:text-white"> صورة العقار</label>
+        <label htmlFor="file_input" className="block mb-2 text-md font-semibold text-gray-900 dark:text-white">
+          صورة العقار
+        </label>
         <div className="flex border p-2 rounded-xl items-center">
-          <input 
-          className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-          id="file_input"
-          type="file"
-          onChange={handleImageUpload}
+          <input
+            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+            id="file_input"
+            type="file"
+            onChange={handleImageUpload}
           />
           <Image className="mr-2 p-px text-gray-400" />
         </div>
-      </div>
+        <div className="mt-2 flex items-center">
+            {uploadStatus === 'uploading' && (
+              <span className="text-yellow-500 text-sm">Uploading...</span>
+            )}
+            {uploadStatus === 'uploaded' && (
+              <span className="text-green-500 flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-5 h-5 mr-1"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 12.75l6 6 9-13.5"
+                  />
+                </svg>
+                <span>Uploaded</span>
+              </span>
+            )}
+            {uploadStatus === 'error' && (
+              <span className="text-red-500 text-sm">حدث خطأ</span>
+            )}
+          </div>
+        </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <NumberInput

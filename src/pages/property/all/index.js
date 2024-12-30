@@ -40,14 +40,14 @@ const index = () => {
                 {properties && properties.map((property) => {
                     return (
                         <PropertyCard
-                            key={property._id}
-                            id={property._id}
-                            propName={property.propertyName}
-                            propImage={property.image}
-                            propLocation={property.location}
-                            propAttributes={property.attributes}
-                            propOwnerPhone={property.addedBy.phone}
-                            propOwnerWhatsApp={property.addedBy.whatsapp}
+                        key={property._id}
+                        id={property._id}
+                        propName={property.propertyName}
+                        propImage={property.image}
+                        propLocation={property.location}
+                        propAttributes={property.attributes}
+                        propOwnerPhone={property.addedBy.phone}
+                        propOwnerWhatsApp={property.addedBy.whatsapp}
                         />
                     );
                 })}

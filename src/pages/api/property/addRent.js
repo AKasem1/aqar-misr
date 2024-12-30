@@ -34,9 +34,36 @@ const handler = async (req, res) => {
         } = req.body
         
 
-        if (!propertyName || !propertyType || !image || !propertyDescription || !currentPrice || !propertyArea || !bathrooms || !rooms || !location || !city) {
-            throw Error('يجب ملئ جميع البيانات');
-          }
+        if (!propertyName) {
+            throw Error('يجب إضافة اسم العقار');
+        }
+        if (!propertyType) {
+            throw Error('يجب إضافة نوع العقار');
+        }
+        if (!image) {
+            throw Error('يجب رفع صورة العقار');
+        }
+        if (!propertyDescription) {
+            throw Error('يجب إضافة وصف العقار');
+        }
+        if (!currentPrice) {
+            throw Error('يجب إضافة السعر الحالي للعقار');
+        }
+        if (!propertyArea) {
+            throw Error('يجب إضافة مساحة العقار');
+        }
+        if (!bathrooms) {
+            throw Error('يجب إضافة عدد الحمامات');
+        }
+        if (!rooms) {
+            throw Error('يجب إضافة عدد الغرف');
+        }
+        if (!location) {
+            throw Error('يجب إضافة موقع العقار');
+        }
+        if (!city) {
+            throw Error('يجب إضافة مدينة العقار');
+        }
 
         if (currentPrice < 0 || propertyArea < 0 || bathrooms < 0 || rooms < 0) {
             throw Error('غير مسموح بالقيم السالبة');
