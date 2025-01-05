@@ -204,7 +204,7 @@ const RentBasicInfo = (type) => {
       </div>
       <div className="space-y-2 w-full md:w-2/4">
         <label htmlFor="file_input" className="block mb-2 text-md font-semibold text-gray-900 dark:text-white">
-          صورة العقار
+        <span> صورة العقار <span className="text-red-500">* </span></span>
         </label>
         <div className="flex border p-2 rounded-xl items-center">
           <input

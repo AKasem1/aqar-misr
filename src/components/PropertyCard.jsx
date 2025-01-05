@@ -3,8 +3,37 @@ import PropertyAttribute from "./PropertyAttribute";
 import Link from "next/link";
 import { MapPin, Phone } from "lucide-react";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 const PropertyCard = (props) => {
+  const router = useRouter();
+  const user = useSelector((state) => state.auth.user);
+
+  const handleDelete = async (id) => {
+    console.log("Delete property with id: ", id);
+    try {
+          const response = await fetch("/api/property/deleteProperty", {
+            method: "DELETE",
+            body: JSON.stringify({id}),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.json();
+          console.log(data);
+          if (!response.ok) {
+            Swal.fire(data.message, '', 'error')
+            throw new Error(data.message || "Something went wrong!");
+          }
+          Swal.fire('تم حذف العقار بنجاح', '', 'success');
+          router.push("/property/all");
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
   return (
     <div className="border-2 border-gray-200 rounded-lg flex flex-col h-[400px] overflow-hidden">
       <Link href={"/property/" + props.id} className="h-full flex flex-col">
@@ -75,14 +104,27 @@ const PropertyCard = (props) => {
         </div>
 
         <hr />
-
+        </Link>
         {/* "رؤية المزيد" Section */}
-        <div className="flex justify-center py-2">
-          <p className="text-sky-600 font-semibold hover:text-sky-800">
-            رؤية المزيد
-          </p>
+        <div className="flex justify-center py-2 align-content-center gap-10">
+        {user ? (
+          user.type === "admin" || user.type === "employee" ? (
+            <>
+              <button className="p-1 text-red-500 rounded font-semibold" onClick={() => handleDelete(props.id)}>
+                حذف العقار
+              </button>
+              <div className="border-l-2 border-gray-300 h-full"></div>
+              <p className="text-sky-600 font-semibold hover:text-sky-800 p-1">
+              رؤية المزيد
+            </p>
+            </>
+          ) : (
+            <p className="text-sky-600 font-semibold hover:text-sky-800 p-1">
+              رؤية المزيد
+            </p>
+          )
+        ) : null}
         </div>
-      </Link>
     </div>
   );
 };
