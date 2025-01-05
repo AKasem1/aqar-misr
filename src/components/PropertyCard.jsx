@@ -6,14 +6,15 @@ import Image from "next/image";
 
 const PropertyCard = (props) => {
   return (
-    <div className="border-2 border-gray-200 rounded-lg flex flex-col h-[400px]">
+    <div className="border-2 border-gray-200 rounded-lg flex flex-col h-[400px] overflow-hidden">
       <Link href={"/property/" + props.id} className="h-full flex flex-col">
         {/* Property Image */}
         <div className="relative rounded-t-lg overflow-hidden h-[200px] w-full min-w-[300px]">
           {/* Blurred Background */}
           <div className="absolute inset-0 blur-lg">
-            <img
+            <Image
               src={props.propImage}
+              fill
               alt="Property Background"
               className="w-full h-full object-cover"
             />

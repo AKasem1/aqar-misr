@@ -9,7 +9,6 @@ import AddAdmin from '@/components/dashboard/addAdmin';
 import AddArticle from '@/components/dashboard/addArticle';
 import AddProjects from '@/components/dashboard/addProjects';
 
-
 const Dashboard = () => {
     const [selectedSteps, setSelectedSteps] = useState(1);
 
@@ -46,14 +45,15 @@ const Dashboard = () => {
                 <title>Aqar Misr | إضافة عقار</title>
                 <meta name="description" content="إضافة عقار" />
             </Head>
+            <main>
             <div className="flex min-h-screen">
                 {/* Main content area */}
                 <div className="flex-grow">
                     {sidebarItems.find(item => item.id === selectedSteps)?.component}
                 </div>
 
-                {/*The sidebar itself */}
-                <div className="w-64 border-l bg-background" dir='rtl'>
+                {/* The sidebar itself */}
+                <div className="w-16 md:w-64 border-l bg-background" dir='rtl'>
                     <div className="space-y-4 py-4">
                         <div className="px-3 py-2">
                             <div className="space-y-1">
@@ -62,13 +62,13 @@ const Dashboard = () => {
                                         key={item.id}
                                         variant={selectedSteps === item.id ? "secondary" : "ghost"}
                                         className={cn(
-                                            "w-full justify-start gap-2",
+                                            "w-full justify-center md:justify-start gap-2", // Center icons on small screens
                                             selectedSteps === item.id && "bg-secondary"
                                         )}
                                         onClick={() => setSelectedSteps(item.id)}
                                     >
                                         <item.icon className="h-4 w-4" />
-                                        <span>{item.label}</span>
+                                        <span className="hidden md:inline">{item.label}</span> {/* Hide labels on small screens */}
                                     </Button>
                                 ))}
                             </div>
@@ -76,6 +76,7 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+            </main>
         </>
     );
 };
