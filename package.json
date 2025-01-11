@@ -25,6 +25,7 @@
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.1",
     "next": "^15.0.4",
+    "nodemailer": "^6.9.16",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

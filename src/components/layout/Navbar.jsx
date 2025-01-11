@@ -58,7 +58,7 @@ const Navbar = () => {
         </Link>
         <Link
           className="px-4 py-2 hover:bg-gray-100 rounded-full transition"
-          href="/contact">
+          href="/contactus">
           تواصل معنا
         </Link>
       </div>
@@ -140,7 +140,7 @@ const Navbar = () => {
             المدونة
           </Link>
           <Link
-            href="/contact"
+            href="/contactus"
             onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
             className="px-4 py-2 hover:bg-gray-100 rounded-full transition">
             تواصل معنا

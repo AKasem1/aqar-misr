@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { MongoClient, ObjectId } from 'mongodb';
 
 const index = ({property}) => {
+
     const router = useRouter()
 
     if (!property) {
@@ -29,14 +30,20 @@ const index = ({property}) => {
             </Head>
             <div className='m-6 p-10 bg-gray-50 rounded-lg shadow-lg'>
                 <div className='grid grid-cols-1 lg:grid-cols-2 justify-between gap-10'>
-                    {/* Property Image Carousel (carousel not implemented yet) */}
+
                     <Image className='rounded-lg max-h-[500px] mx-auto' src={property.propertyImage || "https://images.pexels.com/photos/1370704/pexels-photo-1370704.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"} alt={property.propertyName} width={500} height={500} loading='eager' />
 
-                    {/* Property Details plus buy/rent button*/}
+
                     <div dir='rtl' className='space-y-5'>
-                        <Button className="bg-teal-900 hover:bg-teal-800">
+                        <Button className="bg-teal-900 hover:bg-teal-800"
+                          onClick={() => {
+                            window.open(process.env.NEXT_PUBLIC_WHATSAPP_URL, "_blank");
+                            // window.location.href = process.env.WHATSAPP_URL;
+                          }}
+                        >
                             <ArrowRight />اشتري العقار الان
                         </Button>
+
                         <h1 className='text-3xl'>{property.propertyName}</h1>
 
                         <p className='text-green-500'>يبدا من{property.currentPrice} ج</p>

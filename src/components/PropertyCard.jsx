@@ -105,7 +105,7 @@ const PropertyCard = (props) => {
 
         <hr />
         </Link>
-        {/* "رؤية المزيد" Section */}
+
         <div className="flex justify-center py-2 align-content-center gap-10">
         {user ? (
           user.type === "admin" || user.type === "employee" ? (
@@ -114,12 +114,16 @@ const PropertyCard = (props) => {
                 حذف العقار
               </button>
               <div className="border-l-2 border-gray-300 h-full"></div>
-              <p className="text-sky-600 font-semibold hover:text-sky-800 p-1">
+              <p className="text-sky-600 font-semibold hover:text-sky-800 p-1 cursor-pointer"
+              onClick={() => router.push("/property/" + props.id)}
+              >
               رؤية المزيد
             </p>
             </>
           ) : (
-            <p className="text-sky-600 font-semibold hover:text-sky-800 p-1">
+            <p className="text-sky-600 font-semibold hover:text-sky-800 p-1 cursor-pointer"
+            onClick={() => router.push("/property/" + props.id)}
+            >
               رؤية المزيد
             </p>
           )
