@@ -67,7 +67,7 @@ const handler = async (req, res) => {
                 console.log(user)
                 const token = createToken(user._id)
                 client.close();
-                res.status(201).json({user, token})
+                res.status(201).json({user, token, type: user.type})
         }
     } catch (error) {
         console.error(error.message)

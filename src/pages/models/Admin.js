@@ -23,7 +23,7 @@ const AdminSchema = new mongoose.Schema({
     type:{
       type: String,
       enum: ['admin', 'employee'],
-      default: 'admin'
+      default: 'employee'
     }
   }, { timestamps: true });
   

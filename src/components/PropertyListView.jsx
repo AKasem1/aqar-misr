@@ -43,8 +43,8 @@ const PropertyListView = () => {
                 propImage={property.image}
                 propLocation={property.location}
                 propAttributes={property.attributes}
-                propOwnerPhone={property.addedBy.phone}
-                propOwnerWhatsApp={property.addedBy.whatsapp}
+                propOwnerPhone={property.seller.phone}
+                // propOwnerWhatsApp={property.addedBy.whatsapp}
               />
             </CarouselItem>
           );

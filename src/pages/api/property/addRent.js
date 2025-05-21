@@ -1,5 +1,4 @@
 import { MongoClient } from 'mongodb';
-import { ObjectId } from 'mongodb';
 
 const handler = async (req, res) => {
     try {
@@ -8,7 +7,6 @@ const handler = async (req, res) => {
         console.log(process.env.MONGO_URL)
         const db = client.db();
         const propertiesCollection = db.collection('properties');
-        const userCollection = db.collection('users')
 
         const {
             propertyName,
@@ -16,10 +14,14 @@ const handler = async (req, res) => {
             propertyDescription,
             currentPrice,
             image,
+            seller,
+            propertyGroup,
+            propertyBuilding,
+            propertyNumber,
             propertyArea,
             bathrooms,
             rooms,
-            location,
+            // location,
             city,
             hasKitchen,
             hasGarden,
@@ -28,9 +30,11 @@ const handler = async (req, res) => {
             hasMeters,
             hasHeating,
             hasAC,
+            installmentAmount,
+            installmentYears,
+            upfrontCash,
             isFurnished,
             contractType,
-            userId
         } = req.body
         
 
@@ -58,25 +62,39 @@ const handler = async (req, res) => {
         if (!rooms) {
             throw Error('يجب إضافة عدد الغرف');
         }
-        if (!location) {
-            throw Error('يجب إضافة موقع العقار');
+        if (!seller) {
+            throw Error('يجب إضافة بيانات البائع');
         }
+        // if (!location) {
+        //     throw Error('يجب إضافة موقع العقار');
+        // }
         if (!city) {
             throw Error('يجب إضافة مدينة العقار');
         }
-
+        if (!propertyGroup) {
+            throw Error('يجب إضافة جمعية العقار');
+        }
+        if (!propertyBuilding) {
+            throw Error('يجب إضافة بناية العقار');
+        }
+        if (!propertyNumber) {
+            throw Error('يجب إضافة رقم العقار');
+        }
+        
         if (currentPrice < 0 || propertyArea < 0 || bathrooms < 0 || rooms < 0) {
             throw Error('غير مسموح بالقيم السالبة');
         }
 
-        const user = await userCollection.findOne({ _id: new ObjectId(userId) });
-        console.log("user id: ", userId)
-        console.log("user: ", user)
-
-        if(!user){
-          throw Error('هذا المستخدم غير موجود');
+        if (contractType === 'تمليك') {
+            if (!installmentAmount || !installmentYears || !upfrontCash) {
+                throw Error('يجب إضافة كافة البيانات المطلوبة');
+            }
         }
-        const property = await propertiesCollection.insertOne({
+
+        console.log("seller: ", seller)
+
+        // Create base property object without installment fields
+        const propertyData = {
             propertyName,
             propertyType,
             propertyDescription,
@@ -85,7 +103,7 @@ const handler = async (req, res) => {
             propertyArea,
             bathrooms,
             rooms,
-            location,
+            // location,
             city,
             hasKitchen,
             hasGarden,
@@ -97,8 +115,21 @@ const handler = async (req, res) => {
             isFurnished,
             contractType,
             accepted: 'pending',
-            addedBy: userId
-        })
+            seller,
+            propertyGroup,
+            propertyBuilding,
+            propertyNumber
+        };
+
+        if (contractType === 'تمليك') {
+            Object.assign(propertyData, {
+                installmentAmount,
+                installmentYears,
+                upfrontCash
+            });
+        }
+
+        const property = await propertiesCollection.insertOne(propertyData);
 
         client.close(); 
         console.log('Property Added Successfully..');

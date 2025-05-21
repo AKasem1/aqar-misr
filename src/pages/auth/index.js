@@ -47,7 +47,7 @@ export default function Component() {
           Swal.fire(data.message, '', 'error')
           throw new Error(data.message || "Something went wrong!");
         }
-        const userData = { user: data.user, token: data.token };
+        const userData = { user: data.user, token: data.token, type: data.type };
         console.log("user data: ", userData)
         dispatch(setUser(userData));
         Swal.fire('تم إنشاء الحساب بنجاح', '', 'success');
@@ -66,7 +66,7 @@ export default function Component() {
           Swal.fire(data.message, '', 'error')
           throw new Error(data.message || "Something went wrong!");
         }
-        const userData = { user: data.user, token: data.token };
+        const userData = { user: data.user, token: data.token, type: data.type };
         console.log("user data: ", userData)
         dispatch(setUser(userData));
         Swal.fire('تم تسجيل الدخول بنجاح', '', 'success');

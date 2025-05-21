@@ -46,7 +46,7 @@ const index = ({property}) => {
 
                         <h1 className='text-3xl'>{property.propertyName}</h1>
 
-                        <p className='text-green-500'>يبدا من{property.currentPrice} ج</p>
+                        <p className='text-green-500'>يبدأ من {property.currentPrice} ج</p>
                         <div className='grid grid-cols-2 lg:flex items-center gap-4'>
                             <div className='flex items-center gap-2'>
                                 <Bed className='py-px text-gray-600' />
@@ -62,9 +62,36 @@ const index = ({property}) => {
                             </div>
                             <div className='flex items-center gap-2'>
                                 <MapPin className='py-px text-gray-600' />
-                                <p className='text-gray-600'>{property.location}</p>
+                                <p className='text-gray-600'>المجموعة {property.propertyGroup}</p>
                             </div>
                         </div>
+
+                        <div className='grid grid-cols-2 lg:flex items-center gap-4'>
+                            <div className='flex items-center gap-2'>
+                                <MapPin className='py-px text-gray-600' />
+                                <p className='text-gray-600'>المبنى {property.propertyBuilding}</p>
+                            </div>
+                            <div className='flex items-center gap-2'>
+                                <MapPin className='py-px text-gray-600' />
+                                <p className='text-gray-600'>رقم العقار {property.propertyNumber}</p>
+                            </div>
+                        </div>
+
+                        {property.contractType === 'تمليك' && property.upFrontPayment && (
+                            <div className='bg-gray-50 p-4 rounded-lg'>
+                                <h3 className='text-lg font-semibold mb-2'>معلومات التقسيط</h3>
+                                <div className='grid grid-cols-2 gap-4'>
+                                    <div>
+                                        <p className='text-gray-600'>الدفعة المقدمة: <span className='font-semibold'>{property.upFrontPayment} جنيه</span></p>
+                                        <p className='text-gray-600'>عدد سنوات التقسيط: <span className='font-semibold'>{property.yearsOfInstallments} سنوات</span></p>
+                                    </div>
+                                    <div>
+                                        <p className='text-gray-600'>القسط الشهري: <span className='font-semibold'>{property.installmentAmount} جنيه</span></p>
+                                        <p className='text-gray-600'>عدد الأقساط: <span className='font-semibold'>{property.yearsOfInstallments * 12} قسط</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         <hr />
                         <p className='text-gray-600'>{property.propertyDescription}</p>
@@ -129,7 +156,7 @@ const index = ({property}) => {
                         <h1 className='text-2xl'>موقع العقار</h1>
                         <div className='flex items-center gap-2'>
                             <MapPin className='py-px text-gray-600' />
-                            <p className='text-gray-600'>{property.location}</p>
+                            <p className='text-gray-600'>{property.city}</p>
                         </div>
                         <div className='flex items-center gap-2'>
                             <Map className='py-px text-gray-600' />
@@ -190,11 +217,17 @@ export async function getStaticProps(context) {
       addedBy: property.addedBy?.toString() || null,
       city: property.city,
       contractType: property.contractType,
-      location: property.location,
+      propertyGroup: property.propertyGroup,
+      propertyBuilding: property.propertyBuilding,
+      propertyNumber: property.propertyNumber,
       currentPrice: property.currentPrice,
       propertyArea: property.propertyArea,
       rooms: property.rooms,
       bathrooms: property.bathrooms,
+      // Installment information with default values
+      upFrontPayment: property.upFrontPayment || null,
+      yearsOfInstallments: property.yearsOfInstallments || null,
+      installmentAmount: property.installmentAmount || null,
       features: {
         hasKitchen: property.hasKitchen || false,
         hasGarden: property.hasGarden || false,

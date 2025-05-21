@@ -75,20 +75,19 @@ const Navbar = () => {
         </div>
 
         {/* Buttons for specific users (i.e. User get Login/signup, Admins get Dashboard, etc) */}
-        {user ? (
-          user.type === "admin" || user.type === "employee" ? (
+        { user && (user.type === "admin" || user.type === "employee") ? (
             <button className="px-7 py-2 border border-black rounded-full hover:bg-teal-900 hover:text-white transition-colors">
               <Link href="/dashboard">لوحة التحكم</Link>
             </button>
-          ) : (
-            <button className="px-7 py-2 border border-black rounded-full hover:bg-teal-900 hover:text-white transition-colors">
-              <Link href="/property/add">اضافة عقار</Link>
-            </button>
-          )
         ) : (
           <button className="px-7 py-2 border border-black rounded-full hover:bg-teal-900 hover:text-white transition-colors">
             <Link href="/auth">تسجيل دخول</Link>
           </button>
+        )}
+        {(!user || (user.type != "admin" && user.type != "employee")) && (
+        <button className="px-7 py-2 border border-black rounded-full hover:bg-teal-900 hover:text-white transition-colors">
+              <Link href="/property/add">اضافة عقار</Link>
+            </button>
         )}
 
         {/*Signout button*/}

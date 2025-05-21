@@ -21,6 +21,7 @@ export default function AddAdmin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(registerData);
     try {
       const response = await fetch("/api/auth/addAdmin", {
         method: "POST",
@@ -99,6 +100,7 @@ export default function AddAdmin() {
                       setRegisterData({ ...registerData, type: e.target.value })
                     }
                   >
+                    <option value="" disabled>اختر نوع الموظف</option>
                     <option value="admin">أدمن</option>
                     <option value="employee">موظف</option>
                   </select>

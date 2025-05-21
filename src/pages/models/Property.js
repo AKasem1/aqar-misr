@@ -21,43 +21,75 @@ const PropertySchema = new mongoose.Schema({
     enum: ['شقة', 'فيلا', 'مكتب', 'محل'],
     trim: true
   },
-  addedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+  assignedEmployees: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Employee',
+    default: []
   },
-  city:{
+  seller: {
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    phone: {
+      type: String,
+      required: true,
+      trim: true
+    }
+  },
+  city: {
     type: String,
     required: true,
     enum: [
-        "الأقصر",
-        "أسوان",
-        "الأسيوط",
-        "البحيرة",
-        "بورسعيد",
-        "الجيزة",
-        "الدقهلية",
-        "القاهرة",
-        "القليوبية",
-        "المنيا",
-        "المنوفية",
-        "الوادى الجديد",
-        "اسكندرية",
-        "اسماعيلية",
-        "السويس",
-        "شمال سيناء",
-        "جنوب سيناء",
-        "سوهاج",
-        "قنا",
-        "كفر الشيخ"
-      ], 
+      "الأقصر",
+      "أسوان",
+      "الأسيوط",
+      "البحيرة",
+      "بورسعيد",
+      "الجيزة",
+      "الدقهلية",
+      "القاهرة",
+      "القليوبية",
+      "المنيا",
+      "المنوفية",
+      "الوادى الجديد",
+      "اسكندرية",
+      "اسماعيلية",
+      "السويس",
+      "شمال سيناء",
+      "جنوب سيناء",
+      "سوهاج",
+      "قنا",
+      "كفر الشيخ",
+      "مطروح",
+      "الغردقة",
+      "البحر الأحمر",
+    ],
   },
   contractType: {
     type: String,
     enum: ['إيجار', 'تمليك'],
     required: true,
   },
-  location: {
+  installmentAmount: {
+    type: Number,
+  },
+  upFrontPayment: {
+    type: Number,
+  },
+  yearsOfInstallments: {
+    type: Number,
+  },
+  propertyGroup: {
+    type: String,
+    required: true,
+  },
+  propertyBuilding: {
+    type: String,
+    required: true,
+  },
+  propertyNumber: {
     type: String,
     required: true,
   },

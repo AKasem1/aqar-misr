@@ -24,7 +24,9 @@ import {
   Receipt,
   Camera,
   MapPinHouse,
-  MapPinned 
+  MapPinned, 
+  User,
+  Phone
 } from 'lucide-react';
 import ExpandingTextarea from '@/components/form/ExpandingTextarea';
 
@@ -32,8 +34,7 @@ const RentBasicInfo = (type) => {
   const router = useRouter();
   let contractType = type.type;
   const [uploadStatus, setUploadStatus] = useState('idle')
-  const user = useSelector((state) => state.auth.user);
-  const token = useSelector((state) => state.auth.token);
+
 
   useEffect(() => {
     contractType = type.type;
@@ -45,6 +46,9 @@ const RentBasicInfo = (type) => {
     propertyDescription: '',
     image: '',
     currentPrice: '',
+    installmentAmount: '',
+    installmentYears: '',
+    upfrontCash: '',
     propertyArea: '',
     bathrooms: 0,
     rooms: 0,
@@ -59,23 +63,59 @@ const RentBasicInfo = (type) => {
     hasAC: false,
     isFurnished: false,
     contractType,
-    userId: ''
+    seller: {
+      name: '',
+      phone: ''
+    },
+    propertyGroup: '',
+    propertyBuilding: '',
+    propertyNumber: ''
   });
 
   const [errors, setErrors] = useState({
     propertyName: false,
     propertyType: false,
     currentPrice: false,
+    installmentAmount: false,
+    installmentYears: false,
+    upfrontCash: false,
     propertyArea: false,
+    propertyGroup: false,
+    propertyBuilding: false,
+    propertyNumber: false,
+    seller: {
+      name: false,
+      phone: false
+    }
   });
 
   const handleInputChange = (field, value) => {
-    setFormState((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-    if (value.trim() !== '') {
-      setErrors((prev) => ({ ...prev, [field]: false }));
+    if (field.includes('.')) {
+      const [parent, child] = field.split('.');
+      setFormState((prev) => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [child]: value
+        }
+      }));
+      if (value.trim() !== '') {
+        setErrors((prev) => ({
+          ...prev,
+          [parent]: {
+            ...prev[parent],
+            [child]: false
+          }
+        }));
+      }
+    } else {
+      setFormState((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+      if (value.trim() !== '') {
+        setErrors((prev) => ({ ...prev, [field]: false }));
+      }
     }
   };
 
@@ -93,7 +133,17 @@ const RentBasicInfo = (type) => {
       propertyName: formState.propertyName.trim() === '',
       propertyType: formState.propertyType.trim() === '',
       currentPrice: formState.currentPrice.trim() === '',
+      installmentAmount: contractType === 'تمليك' ? formState.installmentAmount.trim() === '' : false,
+      installmentYears: contractType === 'تمليك' ? formState.installmentYears.trim() === '' : false,
+      upfrontCash: contractType === 'تمليك' ? formState.upfrontCash.trim() === '' : false,
       propertyArea: formState.propertyArea.trim() === '',
+      propertyGroup: formState.propertyGroup.trim() === '',
+      propertyBuilding: formState.propertyBuilding.trim() === '',
+      propertyNumber: formState.propertyNumber.trim() === '',
+      seller: {
+        name: formState.seller.name.trim() === '',
+        phone: formState.seller.phone.trim() === ''
+      }
     };
 
     setErrors(newErrors);
@@ -118,12 +168,23 @@ const RentBasicInfo = (type) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     formState.contractType = contractType;
-    formState.userId = user._id;
-    console.log("Property info: ", formState)
+    
+    // Create submission data based on contract type
+    const submissionData = {
+      ...formState,
+      // Remove installment fields if not تمليك
+      ...(contractType !== 'تمليك' && {
+        installmentAmount: undefined,
+        installmentYears: undefined,
+        upfrontCash: undefined
+      })
+    };
+
+    console.log("Property info: ", submissionData)
     try {
       const response = await fetch("/api/property/addRent", {
         method: "POST",
-        body: JSON.stringify(formState),
+        body: JSON.stringify(submissionData),
         headers: {
           "Content-Type": "application/json",
         },
@@ -148,6 +209,26 @@ const RentBasicInfo = (type) => {
       onSubmit={handleSubmit}
     >
       <h2 className="text-xl text-center font-bold mb-4">{contractType == 'إيجار' ? 'معلومات الإيجار' : 'معلومات التمليك'}</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <TextInput
+          label="اسم البائع"
+          placeholder="اسم البائع"
+          isRequired={true}
+          value={formState.seller?.name}
+          onChange={(e) => handleInputChange('seller.name', e.target.value)}
+          errorMsg={errors.seller?.name ? 'Please provide the seller name' : ''}
+          labelIcon={<User className="size-4" />}
+        />
+        <TextInput
+          label="رقم الهاتف"
+          placeholder="رقم الهاتف"
+          isRequired={true}
+          value={formState.seller?.phone}
+          onChange={(e) => handleInputChange('seller.phone', e.target.value)}
+          errorMsg={errors.seller?.phone ? 'Please provide the seller phone number' : ''}
+          labelIcon={<Phone className="size-4" />}
+        />
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <TextInput
           label="اسم العقار"
@@ -183,14 +264,64 @@ const RentBasicInfo = (type) => {
           }
           labelIcon={<Banknote className="size-4" />}
         />
+        
+        {contractType === 'تمليك' && (
+          <>
+            <NumberInput
+              label="قيمة القسط"
+              placeholder="قيمة القسط"
+              isRequired={true}
+              value={formState.installmentAmount}
+              onChange={(e) => handleInputChange('installmentAmount', e.target.value)}
+              errorMsg={errors.installmentAmount ? 'Please provide the installment amount' : ''}
+              labelIcon={<Banknote className="size-4" />}
+            />
+            <NumberInput
+              label="عدد سنوات التقسيط"
+              placeholder="عدد سنوات التقسيط"
+              isRequired={true}
+              value={formState.installmentYears}
+              onChange={(e) => handleInputChange('installmentYears', e.target.value)}
+              errorMsg={errors.installmentYears ? 'Please provide the number of years' : ''}
+              labelIcon={<Receipt className="size-4" />}
+            />
+            <NumberInput
+              label="المقدم"
+              placeholder="المقدم"
+              isRequired={true}
+              value={formState.upfrontCash}
+              onChange={(e) => handleInputChange('upfrontCash', e.target.value)}
+              errorMsg={errors.upfrontCash ? 'Please provide the upfront cash amount' : ''}
+              labelIcon={<Banknote className="size-4" />}
+            />
+          </>
+        )}
         <TextInput
-          label="عنوان العقار"
-          placeholder="عنوان العقار"
+          label="المجموعة"
+          placeholder="رقم المجموعة"
           isRequired={true}
-          value={formState.location}
-          onChange={(e) => handleInputChange('location', e.target.value)}
-          errorMsg={errors.location ? 'Please provide the property location' : ''}
-          labelIcon={<MapPinHouse className="size-4" />}
+          value={formState.propertyGroup}
+          onChange={(e) => handleInputChange('propertyGroup', e.target.value)}
+          errorMsg={errors.propertyGroup ? 'Please provide the property group' : ''}
+          labelIcon={<House className="size-4" />}
+        />
+        <TextInput
+          label="العمارة"
+          placeholder="رقم العمارة"
+          isRequired={true}
+          value={formState.propertyBuilding}
+          onChange={(e) => handleInputChange('propertyBuilding', e.target.value)}
+          errorMsg={errors.propertyBuilding ? 'Please provide the building number' : ''}
+          labelIcon={<Building className="size-4" />}
+        />
+        <TextInput
+          label="رقم العقار"
+          placeholder="رقم العقار"
+          isRequired={true}
+          value={formState.propertyNumber}
+          onChange={(e) => handleInputChange('propertyNumber', e.target.value)}
+          errorMsg={errors.propertyNumber ? 'Please provide the property number' : ''}
+          labelIcon={<House className="size-4" />}
         />
         <TextInput
           label="المدينة"

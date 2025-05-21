@@ -10,8 +10,7 @@ const handler = async (req, res) => {
       console.log("Connected to MongoDB");
 
       const properties = await Property.find({"accepted": "accepted"})
-        .populate("addedBy", "fullName phone")
-        .exec();
+
       // console.log("Properties Requests: ", properties)
       res.status(200).json({message: "properties requests retrieved successfully.", data: properties});
     } else {

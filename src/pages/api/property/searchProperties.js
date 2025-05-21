@@ -2,7 +2,6 @@ import Property from "@/pages/models/Property";
 import mongoose from "mongoose";
 
 const handler = async (req, res) => {
-  
   try {
     if (req.method === "GET") {
       await mongoose.connect(process.env.MONGO_URL);
@@ -11,6 +10,7 @@ const handler = async (req, res) => {
       const { query } = req.query;
 
       let properties;
+
       if (query) {
         properties = await Property.find({
           $and: [
@@ -20,6 +20,15 @@ const handler = async (req, res) => {
                 { city: { $regex: query, $options: "i" } },
                 { propertyName: { $regex: query, $options: "i" } },
                 { propertyDescription: { $regex: query, $options: "i" } },
+                { propertyType: { $regex: query, $options: "i" } },
+                { contractType: { $regex: query, $options: "i" } },
+                { location: { $regex: query, $options: "i" } },
+                { $expr: { $regexMatch: { 
+                    input: { $toString: "$currentPrice" }, 
+                    regex: query,
+                    options: "i"
+                  } 
+                }},
               ],
             },
           ],
@@ -32,7 +41,10 @@ const handler = async (req, res) => {
           .exec();
       }
 
-      res.status(200).json({ message: "Properties retrieved successfully.", data: properties});
+      res.status(200).json({
+        message: "Properties retrieved successfully.",
+        data: properties,
+      });
     } else {
       res.status(405).json({ message: "Method Not Allowed" });
     }

@@ -36,12 +36,12 @@ const handler = async (req, res) => {
       if(user){
         const token = createToken(user._id);
         console.log('User Logged in Successfully..');
-        res.status(201).json({ user, token });
+        res.status(201).json({ user, token, type:  user.type});
       }
       else if(admin){
         const token = createToken(admin._id);
         console.log('Admin Logged in Successfully..');
-        res.status(201).json({ user: admin, token });
+        res.status(201).json({ user: admin, token, type: admin.type });
       }
 
       }
