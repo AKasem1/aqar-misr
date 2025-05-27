@@ -85,10 +85,10 @@ const Index = () => {
               id={property._id}
               propName={property.propertyName}
               propImage={property.image}
-              propLocation={property.location}
+              propCity={property.city}
               propAttributes={property.attributes}
-              propOwnerPhone={property.addedBy.phone}
-              propOwnerWhatsApp={property.addedBy.whatsapp}
+              propOwnerName={property.seller.name}
+              propOwnerPhone={property.seller.phone}
             />
           ))
         ) : (

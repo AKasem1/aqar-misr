@@ -41,7 +41,7 @@ const index = ({property}) => {
                             // window.location.href = process.env.WHATSAPP_URL;
                           }}
                         >
-                            <ArrowRight />اشتري العقار الان
+                            <ArrowRight />للمزيد من التفاصيل
                         </Button>
 
                         <h1 className='text-3xl'>{property.propertyName}</h1>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropertyCard from "./PropertyCard";
 import {
   Carousel,
@@ -7,24 +7,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/UI/carousel";
-import axios from "axios";
-import { data } from "react-router-dom";
 
-const PropertyListView = () => {
-  const [properties, setProperties] = useState([]);
-
-  useEffect(() => {
-    const getProperties = async () => {
-      const response = await axios
-        .get("/api/property/getProperties")
-        .then((data) => data.data.data)
-        .catch((err) => console.log(err));
-      setProperties(response);
-      console.log(response);
-    };
-    getProperties();
-  }, []);
-
+const PropertyListView = ({ properties }) => {
   return (
     <Carousel
       className="w-full mx-6"
@@ -35,9 +19,8 @@ const PropertyListView = () => {
       <CarouselContent className="-ml-4">
         {properties && properties.map((property) => {
           return (
-            <CarouselItem className="pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+            <CarouselItem key={property._id.toString()} className="pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
               <PropertyCard
-                key={property._id.toString()}
                 id={property._id}
                 propName={property.propertyName}
                 propImage={property.image}

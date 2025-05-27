@@ -1,7 +1,7 @@
 import React from "react";
 import PropertyAttribute from "./PropertyAttribute";
 import Link from "next/link";
-import { MapPin, Phone } from "lucide-react";
+import { MapPin, Phone, MessageCircleMore } from "lucide-react";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -60,13 +60,13 @@ const PropertyCard = (props) => {
         </div>
 
         {/* Content Section */}
-        <div className="px-4 py-2 flex flex-col gap-2 flex-grow overflow-hidden">
+        <div className="px-4 py-2 flex flex-col gap-2 flex-grow overflow-hidden text-right">
           <h1 className="text-lg font-semibold">{props.propName}</h1>
 
           {/* Property Location */}
           <div className="flex flex-row-reverse items-center">
             <MapPin className="p-1" />
-            <h2 className="truncate">{props.propLocation}</h2>
+            <h2 className="truncate">{props.propCity}</h2>
           </div>
 
           {/* Property Attributes */}
@@ -84,23 +84,19 @@ const PropertyCard = (props) => {
 
           <hr />
 
+          {/* Property Owner's Name */}
+          {props.propOwnerName && (
+            <div className="flex items-center justify-center gap-4">
+              <MessageCircleMore className="size-4" />
+              <p className="text-slate-600">{props.propOwnerName}</p>
+            </div>
+          )}
           {/* Property Owner's Phone */}
           <div className="flex items-center justify-center gap-4">
             <Phone className="p-1" />
             <p className="text-slate-600">{props.propOwnerPhone}</p>
           </div>
 
-          {/* Property Owner's Whatsapp */}
-          {props.propOwnerWhatsApp && (
-            <div className="flex items-center justify-center gap-4">
-              <img
-                className="size-4"
-                src="whatsapp_icon.svg"
-                alt="Owner's Whatsapp icon"
-              />
-              <p className="text-slate-600">{props.propOwnerWhatsApp}</p>
-            </div>
-          )}
         </div>
 
         <hr />
