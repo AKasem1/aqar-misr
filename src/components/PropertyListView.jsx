@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropertyCard from "./PropertyCard";
 import {
   Carousel,
@@ -7,8 +7,25 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/UI/carousel";
+import axios from "axios";
 
-const PropertyListView = ({ properties }) => {
+const PropertyListView = () => {
+  const [properties, setProperties] = useState([]);
+  console.log("Hi");
+  useEffect(() => {
+    const getProperties = async () => {
+      try {
+        const response = await axios.get("/api/property/getProperties");
+        console.log("API Response:", response.data);
+        setProperties(response.data.data || []);
+      } catch (err) {
+        console.error("Error fetching properties:", err);
+        setProperties([]);
+      }
+    };
+    getProperties();
+  }, []);
+
   return (
     <Carousel
       className="w-full mx-6"

@@ -3,7 +3,7 @@ import PropertyListView from "../PropertyListView";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-const Properties = ({ properties }) => {
+const Properties = () => {
   return (
     <div className="w-full p-12 flex flex-col items-center justify-center gap-6">
       <div className="relative w-full flex items-center mt-10">
@@ -19,9 +19,9 @@ const Properties = ({ properties }) => {
       </div>
       <p className="text-slate-500">كل ما تبحث عنه من منازل وشقق حديثة</p>
 
-      <PropertyListView properties={properties} />
+      <PropertyListView />
     </div>
   );
 };
 
-export default Properties;
+export default Properties;  

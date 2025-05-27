@@ -119,7 +119,6 @@ const Dashboard = ({ employees }) => {
 
 export async function getServerSideProps() {
     try {
-        console.log("Fetching employees")
         const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
         const response = await axios.get(`${baseUrl}/api/employee/getEmployees`);
         return {
